@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>EyeProtect</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="5.1.2" />
+		<ProjectReference Include="..\..\3.Domain\EyeProtect.Domain\EyeProtect.Domain.csproj" />
+		<ProjectReference Include="..\EyeProtect.Contract\EyeProtect.Contract.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	  <Folder Include="Services\" />
+	</ItemGroup>
+
+</Project>

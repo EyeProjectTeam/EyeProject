@@ -1,0 +1,141 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c956dd76-69c8-4a9c-83ea-d17df83340fd": {
+      "ProjectGuid": "c956dd76-69c8-4a9c-83ea-d17df83340fd",
+      "DisplayName": "SpiderManage.EntityFrameworkCore",
+      "ColorIndex": 0
+    },
+    "068855e8-9240-4f1a-910b-cf825794513b": {
+      "ProjectGuid": "068855e8-9240-4f1a-910b-cf825794513b",
+      "DisplayName": "SpiderManage.Web",
+      "ColorIndex": 1
+    },
+    "42f719ed-8413-4895-b5b4-5ab56079bc66": {
+      "ProjectGuid": "42f719ed-8413-4895-b5b4-5ab56079bc66",
+      "DisplayName": "SpiderManage.Domain.Shared",
+      "ColorIndex": 2
+    },
+    "554ad327-6dba-4f8f-96f8-81ce7a0c863f": {
+      "ProjectGuid": "554ad327-6dba-4f8f-96f8-81ce7a0c863f",
+      "DisplayName": "SpiderManage.Domain",
+      "ColorIndex": 3
+    },
+    "aa94d832-1ccc-4715-95a9-a483f23a1a5d": {
+      "ProjectGuid": "aa94d832-1ccc-4715-95a9-a483f23a1a5d",
+      "DisplayName": "SpiderManage.DbMigrator",
+      "ColorIndex": 4
+    },
+    "520659c8-c734-4298-a3da-b539db9dfc0b": {
+      "ProjectGuid": "520659c8-c734-4298-a3da-b539db9dfc0b",
+      "DisplayName": "SpiderManage.Fetch.Contract",
+      "ColorIndex": 5
+    },
+    "1a94a50e-06dc-43c1-80b5-b662820ec3eb": {
+      "ProjectGuid": "1a94a50e-06dc-43c1-80b5-b662820ec3eb",
+      "DisplayName": "SpiderManage.Fetch.Service",
+      "ColorIndex": 6
+    },
+    "4164bdf7-f527-4e85-9ce6-e3c2d7426a27": {
+      "ProjectGuid": "4164bdf7-f527-4e85-9ce6-e3c2d7426a27",
+      "DisplayName": "SpiderManage.HttpApi",
+      "ColorIndex": 7
+    },
+    "ef480016-9127-4916-8735-d2466bdbc582": {
+      "ProjectGuid": "ef480016-9127-4916-8735-d2466bdbc582",
+      "DisplayName": "SpiderManage.HttpApi.Client.ConsoleTestApp",
+      "ColorIndex": 8
+    },
+    "5f1b28c6-8d0c-4155-92d0-252f7ea5f674": {
+      "ProjectGuid": "5f1b28c6-8d0c-4155-92d0-252f7ea5f674",
+      "DisplayName": "SpiderManage.Web.Tests",
+      "ColorIndex": 9
+    },
+    "1fe30eb9-74a9-47f5-a9f6-7b1fab672d81": {
+      "ProjectGuid": "1fe30eb9-74a9-47f5-a9f6-7b1fab672d81",
+      "DisplayName": "SpiderManage.EntityFrameworkCore.Tests",
+      "ColorIndex": 10
+    },
+    "91853f21-9cd9-4132-bc29-a7d5d84fffe7": {
+      "ProjectGuid": "91853f21-9cd9-4132-bc29-a7d5d84fffe7",
+      "DisplayName": "SpiderManage.TestBase",
+      "ColorIndex": 11
+    },
+    "caa6fa39-fa16-4659-804a-ebedcd8ccc79": {
+      "ProjectGuid": "caa6fa39-fa16-4659-804a-ebedcd8ccc79",
+      "DisplayName": "SpiderManage.Core",
+      "ColorIndex": 12
+    },
+    "fad89c8e-bf46-4332-bb62-603fe3d94ca4": {
+      "ProjectGuid": "fad89c8e-bf46-4332-bb62-603fe3d94ca4",
+      "DisplayName": "SpiderManage.CoreWeb",
+      "ColorIndex": 13
+    },
+    "dd2b80ce-a496-4be8-9b44-561c1f5381d0": {
+      "ProjectGuid": "dd2b80ce-a496-4be8-9b44-561c1f5381d0",
+      "DisplayName": "SpiderManage.ManageApi",
+      "ColorIndex": 14
+    },
+    "85f05c82-589b-48d6-82d4-b3f817b341b9": {
+      "ProjectGuid": "85f05c82-589b-48d6-82d4-b3f817b341b9",
+      "DisplayName": "SpiderManage.DataApi",
+      "ColorIndex": 15
+    },
+    "1d2e1e0b-3c45-4bbc-ba1b-e77a53d4859b": {
+      "ProjectGuid": "1d2e1e0b-3c45-4bbc-ba1b-e77a53d4859b",
+      "DisplayName": "SpiderManage.JobServer",
+      "ColorIndex": 0
+    },
+    "e8ee650c-8253-4ae5-bf7d-1db98623a4a8": {
+      "ProjectGuid": "e8ee650c-8253-4ae5-bf7d-1db98623a4a8",
+      "DisplayName": "SpiderManage.Core",
+      "ColorIndex": 1
+    },
+    "fa0d57a8-6991-4637-8e31-599bb7670264": {
+      "ProjectGuid": "fa0d57a8-6991-4637-8e31-599bb7670264",
+      "DisplayName": "SpiderManage.Fetch.Service",
+      "ColorIndex": 2
+    },
+    "f3a473b2-9a38-48fc-ac63-289945f58054": {
+      "ProjectGuid": "f3a473b2-9a38-48fc-ac63-289945f58054",
+      "DisplayName": "SpiderManage.CoreWeb",
+      "ColorIndex": 3
+    },
+    "b757dd16-147e-4e2a-909d-266962ae6097": {
+      "ProjectGuid": "b757dd16-147e-4e2a-909d-266962ae6097",
+      "DisplayName": "SpiderManage.Fetch.Contract",
+      "ColorIndex": 4
+    },
+    "0ad4cab9-f28b-4dfe-baf8-f898e7235f4e": {
+      "ProjectGuid": "0ad4cab9-f28b-4dfe-baf8-f898e7235f4e",
+      "DisplayName": "SpiderManage.Domain",
+      "ColorIndex": 5
+    },
+    "d576c048-ffef-4efb-8aa9-5031449e3cfe": {
+      "ProjectGuid": "d576c048-ffef-4efb-8aa9-5031449e3cfe",
+      "DisplayName": "SpiderManage.EntityFrameworkCore",
+      "ColorIndex": 6
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
+    },
+    "6e1dc457-f446-49a9-9634-99e8ae25f624": {
+      "ProjectGuid": "6e1dc457-f446-49a9-9634-99e8ae25f624",
+      "DisplayName": "SpiderManage.DataApi",
+      "ColorIndex": 7
+    },
+    "c450127d-7c11-4388-b33f-b476b76f9d7d": {
+      "ProjectGuid": "c450127d-7c11-4388-b33f-b476b76f9d7d",
+      "DisplayName": "SpiderManage.Core",
+      "ColorIndex": 8
+    },
+    "4cf2e52d-fadf-4957-8b87-8212650b8d22": {
+      "ProjectGuid": "4cf2e52d-fadf-4957-8b87-8212650b8d22",
+      "DisplayName": "SpiderManage.ManageApi",
+      "ColorIndex": 9
+    }
+  },
+  "NextColorIndex": 10
+}
