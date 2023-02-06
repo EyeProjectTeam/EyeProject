@@ -11,10 +11,11 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Volo.Abp.Autofac" Version="5.1.2" />
-		<PackageReference Include="Volo.Abp.AutoMapper" Version="5.1.2" />
-		<PackageReference Include="Volo.Abp.Core" Version="5.1.2" />
-		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="5.1.2" />
+		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.3" />
+		<PackageReference Include="Volo.Abp.Autofac" Version="6.0.3" />
+		<PackageReference Include="Volo.Abp.AutoMapper" Version="6.0.3" />
+		<PackageReference Include="Volo.Abp.Core" Version="6.0.3" />
+		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="6.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

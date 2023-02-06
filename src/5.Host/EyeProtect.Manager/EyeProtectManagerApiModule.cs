@@ -31,6 +31,9 @@ namespace EyeProtect.Manager
             var services = context.Services;
             var config = context.Services.GetConfiguration();
 
+            services.AddHttpContextAccessor();
+            services.AddObjectAccessor<IApplicationBuilder>();
+
             //JWT
             ConfigureJwtAuthentication(context, config);
 

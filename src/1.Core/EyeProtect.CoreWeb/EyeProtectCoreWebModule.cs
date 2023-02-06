@@ -12,8 +12,8 @@ namespace DeviceManage.CoreWeb
         {
             var service = context.Services;
 
-            // MVC
-            service.AddMvc();
+            //// MVC
+            //service.AddMvc();
 
         }
     }
