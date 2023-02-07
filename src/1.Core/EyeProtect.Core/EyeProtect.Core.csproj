@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="EPPlus" Version="4.5.3.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.15" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.1" />
