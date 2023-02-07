@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="8.1.1" />
 		<PackageReference Include="EPPlus" Version="4.5.3.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.15" />
@@ -14,7 +15,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="6.0.3" />
-		<PackageReference Include="Volo.Abp.AutoMapper" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Core" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="6.0.3" />
 	</ItemGroup>

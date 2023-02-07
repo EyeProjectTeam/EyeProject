@@ -16,5 +16,22 @@ namespace EyeProtect.Manage.Controllers
         {
             return View();
         }
+
+        //[HttpPost("")]
+        //public async Task<Results<>> Login()
+        //{
+        //    Response.Redirect("/monitor");
+        //    return View();
+        //}
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult AccountList()
+        {
+            return View();
+        }
     }
 }

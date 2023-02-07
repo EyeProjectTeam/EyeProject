@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Eye后台管理";
+}
 <link rel="stylesheet" type="text/css" href="~/layui/css/layui.css" />
 <link rel="stylesheet" type="text/css" href="~/css/login.css" />
 <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
@@ -7,6 +9,7 @@
         <h3>后台系统登录</h3>
         <div class="m-login-warp">
             <form class="layui-form">
+                @Html.AntiForgeryToken()
                 <div class="layui-form-item">
                     <input type="text" name="title" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
                 </div>
@@ -55,6 +58,16 @@
 
         //监听提交
         form.on('submit(login)', function (data) {
+            $.ajax({
+                url: "/home/regist4",
+                type: "post",
+                datatype: "json",
+                data: { username: $("#txtname").val(), email: $("#txtemail").val() },
+                success: function (result) {
+
+                }
+            });
+
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             })
