@@ -21,7 +21,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyeProtect.Service", "src\2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyeProtect.Domain", "src\3.Domain\EyeProtect.Domain\EyeProtect.Domain.csproj", "{02E11948-EA28-47A4-81B5-68FBA04F5F2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeProtect.Manage", "src\5.Host\EyeProtect.Manage\EyeProtect.Manage.csproj", "{C4234BE5-35A6-442B-85B9-A77F7AFD72CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyeProtect.Manage", "src\5.Host\EyeProtect.Manage\EyeProtect.Manage.csproj", "{C4234BE5-35A6-442B-85B9-A77F7AFD72CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.docment", "0.docment", "{65A3F460-FA32-424B-9D94-5AB75C4360F0}"
+	ProjectSection(SolutionItems) = preProject
+		Doc\前后台功能.xmind = Doc\前后台功能.xmind
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
