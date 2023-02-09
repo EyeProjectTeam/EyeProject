@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using EyeProject.Core.Utils;
+using EyeProtect.Core.Utils;
 
 namespace EyeProject.Core.Dto
 {
@@ -21,7 +21,7 @@ namespace EyeProject.Core.Dto
         {
             Filter = (Filter as Expression<Func<TEntity, bool>>).And(filter);
         }
-        
+
         /// <summary>
         /// 获取查询条件
         /// </summary>

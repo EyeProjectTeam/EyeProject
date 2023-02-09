@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EyeProject.Core.Dto;
+using EyeProtect.Application;
+using EyeProtect.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace EyeProtect.Manage.Controllers
@@ -6,10 +9,12 @@ namespace EyeProtect.Manage.Controllers
     public class SystemController : Controller
     {
         private readonly ILogger<SystemController> _logger;
+        private readonly IMemberService _memberService;
 
-        public SystemController(ILogger<SystemController> logger)
+        public SystemController(ILogger<SystemController> logger, IMemberService memberService)
         {
             _logger = logger;
+            _memberService = memberService;
         }
 
         public IActionResult Login()
@@ -17,12 +22,11 @@ namespace EyeProtect.Manage.Controllers
             return View();
         }
 
-        //[HttpPost("")]
-        //public async Task<Results<>> Login()
-        //{
-        //    Response.Redirect("/monitor");
-        //    return View();
-        //}
+        [HttpPost("Login")]
+        public async Task<Result<loginOuput>> Login(loginInput input)
+        {
+            return await _memberService.LoginAsync(input);
+        }
 
         public IActionResult Index()
         {

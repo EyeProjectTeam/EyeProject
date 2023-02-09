@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web;
-using EyeProject.Core.Utils;
+using EyeProtect.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

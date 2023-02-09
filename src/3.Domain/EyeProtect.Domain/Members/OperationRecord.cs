@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using EyeProtect.Core.Domain;
@@ -16,7 +17,12 @@ namespace EyeProtect.Members
         /// <summary>
         /// 会员Id
         /// </summary>
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
+
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public string Account { get; set; }
 
         /// <summary>
         /// 会员姓名

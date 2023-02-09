@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using EyeProtect.Domain.Members;
+using EyeProtect.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,7 @@ namespace EyeProtect
         public AutoMapperProfile()
         {
             //AutoMapper
-
-            //CreateMap<TemplateTypeConfig, TemplateTypeConfigOutput>();
+            CreateMap<Member, loginOuput>();
         }
     }
 }

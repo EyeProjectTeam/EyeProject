@@ -14,7 +14,7 @@ namespace EyeProtect.Core.Utils
         /// <summary>
         /// 获取单个值
         /// </summary>
-        public static string GetValue(this IEnumerable<Claim> claims, string type)
+        public static string GetClaimValue(this IEnumerable<Claim> claims, string type)
         {
             return claims.FirstOrDefault(p => p.Type == type)?.Value;
         }

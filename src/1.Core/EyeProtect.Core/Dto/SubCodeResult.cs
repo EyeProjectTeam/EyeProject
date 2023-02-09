@@ -1,5 +1,5 @@
 ﻿using System;
-using EyeProject.Core.Utils;
+using EyeProtect.Core.Utils;
 
 namespace EyeProject.Core.Dto
 {

@@ -1,5 +1,4 @@
 ﻿using Volo.Abp.Modularity;
-using Volo.Abp.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using EyeProtect.Fetch.Service.Repository;
 using Volo.Abp.EntityFrameworkCore;
@@ -24,10 +23,5 @@ public class EyeProtectServiceModule : AbpModule
             options.UseMySQL();
         });
 
-        //AutoMapper
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<EyeProtectServiceModule>();
-        });
     }
 }

@@ -1,7 +1,9 @@
 ﻿using DeviceManage.CoreWeb;
 using EyeProtect.Core.Const;
+using EyeProtect.Manage.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Volo.Abp;
@@ -37,7 +39,7 @@ namespace EyeProtect.Manage
             //JWT
             ConfigureJwtAuthentication(context, config);
 
-            //MvcAndCors
+            //Cors
             ConfigureCors(context, config);
 
             // Routing
@@ -67,6 +69,7 @@ namespace EyeProtect.Manage
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<HttpOperationRecord>();
             app.UseEndpoints(endpoints =>
             {
                 // MVC

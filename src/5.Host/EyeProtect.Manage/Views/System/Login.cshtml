@@ -59,7 +59,7 @@
         //监听提交
         form.on('submit(login)', function (data) {
             $.ajax({
-                url: "/home/regist4",
+                url: "/System/Login",
                 type: "post",
                 datatype: "json",
                 data: { username: $("#txtname").val(), email: $("#txtemail").val() },
