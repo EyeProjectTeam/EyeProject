@@ -1,11 +1,18 @@
 ﻿using DeviceManage.CoreWeb;
 using EyeProtect.Core.Const;
+using EyeProtect.Manage.Configuration;
 using EyeProtect.Manage.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 
@@ -16,6 +23,14 @@ namespace EyeProtect.Manage
     public class EyeProtectManagerApiModule : AbpModule
     {
         private const string DefaultCorsPolicyName = "Default";
+
+        /// <summary>
+        /// Swagger文档
+        /// </summary>
+        private readonly (string Name, string Title)[] SwaggerDocs =
+        {
+            (GroupName.ManagerApi, "爱眼接口文档")
+        };
 
         public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
         {
@@ -33,23 +48,23 @@ namespace EyeProtect.Manage
             var services = context.Services;
             var config = context.Services.GetConfiguration();
 
-            services.AddHttpContextAccessor();
-            services.AddObjectAccessor<IApplicationBuilder>();
-
             //JWT
-            ConfigureJwtAuthentication(context, config);
+            services.ConfigureJwtAuthentication(config);
 
             //Cors
-            ConfigureCors(context, config);
+            services.ConfigureCors(config, DefaultCorsPolicyName);
 
             // Routing
-            context.Services.AddRouting();
+            services.AddRouting();
 
-            context.Services.AddControllersWithViews();
+            services.AddControllersWithViews();
 
             // MVC
-            context.Services.AddMvc()
+            services.AddMvc()
                 .AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
+
+            // Swagger
+            services.AddSwagger(config, SwaggerDocs);
         }
 
         /// <inheritdoc />
@@ -63,117 +78,29 @@ namespace EyeProtect.Manage
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCorrelationId();
             app.UseStaticFiles();
+            app.UseAbpSecurityHeaders();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<HttpOperationRecord>();
+            app.UseUnitOfWork();
             app.UseEndpoints(endpoints =>
             {
                 // MVC
                 endpoints.MapDefaultControllerRoute();
             });
+
+            app.UseSwaggerDashboard(config, ServiceRoute.ManagePath, SwaggerDocs);
         }
 
         #region Method
 
-        /// <summary>
-        /// 配置JWT
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="config"></param>
-        private void ConfigureJwtAuthentication(ServiceConfigurationContext context, IConfiguration config)
-        {
-            context.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                        .AddJwtBearer(options =>
-                        {
-                            options.TokenValidationParameters =
-                                new TokenValidationParameters()
-                                {
-                                    // 是否开启签名认证
-                                    ValidateIssuerSigningKey = true,
-                                    ValidateIssuer = true,
-                                    ValidateAudience = true,
-                                    ValidateLifetime = true,
-                                    //ClockSkew = TimeSpan.Zero,
-                                    ValidIssuer = config["Jwt:Issuer"],
-                                    ValidAudience = config["Jwt:Audience"],
-                                    IssuerSigningKey = new SymmetricSecurityKey(
-                                            Encoding.ASCII.GetBytes(config["Jwt:SecurityKey"]))
-                                };
 
-                            options.Events = new JwtBearerEvents
-                            {
-                                OnMessageReceived = currentContext =>
-                                {
-                                    var path = currentContext.HttpContext.Request.Path;
-                                    if (path.StartsWithSegments("/login"))
-                                    {
-                                        return Task.CompletedTask;
-                                    }
 
-                                    var accessToken = string.Empty;
-                                    if (currentContext.HttpContext.Request.Headers.ContainsKey("Authorization"))
-                                    {
-                                        accessToken = currentContext.HttpContext.Request.Headers["Authorization"];
-                                        if (!string.IsNullOrWhiteSpace(accessToken))
-                                        {
-                                            accessToken = accessToken.Split(" ").LastOrDefault();
-                                        }
-                                    }
 
-                                    if (accessToken.IsNullOrWhiteSpace())
-                                    {
-                                        accessToken = currentContext.Request.Query["access_token"].FirstOrDefault();
-                                    }
-
-                                    if (accessToken.IsNullOrWhiteSpace())
-                                    {
-                                        accessToken = currentContext.Request.Cookies[EyeProtectConst.DefaultCookieName];
-                                    }
-
-                                    currentContext.Token = accessToken;
-                                    currentContext.Request.Headers.Remove("Authorization");
-                                    currentContext.Request.Headers.Add("Authorization", $"Bearer {accessToken}");
-
-                                    return Task.CompletedTask;
-                                }
-                            };
-                        });
-        }
-
-        /// <summary>
-        /// 配置跨域
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="config"></param>
-        private void ConfigureCors(ServiceConfigurationContext context, IConfiguration config)
-        {
-            context.Services.AddCors(options =>
-            {
-                options.AddPolicy(DefaultCorsPolicyName, builder =>
-                {
-                    builder
-                        .WithOrigins(
-                            config["App:CorsOrigins"]
-                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                                .Select(o => o.RemovePostFix("/"))
-                                .ToArray()
-                        )
-                        .WithAbpExposedHeaders()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
-            });
-        }
 
         #endregion
     }

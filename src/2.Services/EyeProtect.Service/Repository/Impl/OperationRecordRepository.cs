@@ -1,5 +1,6 @@
 ﻿using EyeProtect.Fetch.Service.Repository;
 using EyeProtect.Members;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

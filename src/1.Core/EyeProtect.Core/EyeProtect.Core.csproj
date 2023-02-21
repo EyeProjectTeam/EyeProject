@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -9,10 +10,6 @@
 		<PackageReference Include="EPPlus" Version="4.5.3.2" />
 		<PackageReference Include="IdentityModel" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.15" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="6.0.3" />
@@ -20,11 +17,12 @@
 		<PackageReference Include="Volo.Abp.Ddd.Application" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="6.0.3" />
+		<PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="6.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Cache\" />
-	  <Folder Include="Runtime\" />
+		<Folder Include="Cache\" />
+		<Folder Include="Runtime\" />
 	</ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Eye后台管理";
+    Layout = "";
 }
 <link rel="stylesheet" type="text/css" href="~/layui/css/layui.css" />
 <link rel="stylesheet" type="text/css" href="~/css/login.css" />
-<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <div class="m-login-bg">
     <div class="m-login">
         <h3>后台系统登录</h3>
@@ -58,11 +60,12 @@
 
         //监听提交
         form.on('submit(login)', function (data) {
+            event.preventDefault();
             $.ajax({
-                url: "/System/Login",
+                url: "/System/LoginMethod",
                 type: "post",
                 datatype: "json",
-                data: { username: $("#txtname").val(), email: $("#txtemail").val() },
+                data: { Account: data.field.title, Password: data.field.password },
                 success: function (result) {
 
                 }

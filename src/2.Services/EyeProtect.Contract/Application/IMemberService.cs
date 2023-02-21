@@ -1,5 +1,7 @@
 ﻿using EyeProject.Core.Dto;
+using EyeProtect.Core.Enums;
 using EyeProtect.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +13,16 @@ namespace EyeProtect.Application
 {
     public interface IMemberService : IApplicationService
     {
-        /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public Task<Result<loginOuput>> LoginAsync(loginInput input);
+        Task<Result<loginOuput>> LoginAsync(loginInput input);
+
+        Task<Result> MakeAccount(int number);
+
+        Task<PageResult<MemberPageListOutput>> GetMemberPageList(MemberPageListInput input);
+
+        Task<Result> UpdateAccountType(long id, AccountType accountType);
+
+        Task<IActionResult> ExportMemberList(MemberPageListInput input);
+
+
     }
 }

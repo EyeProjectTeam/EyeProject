@@ -13,8 +13,9 @@ public class EyeProtectDbContextFactory : IDesignTimeDbContextFactory<EyeProtect
     {
         var connStr = "Server=127.0.0.1;port=3306;database=EyeProtect;user id=root;password=y3909039;minimumpoolsize=10;maximumpoolsize=50";
         var builder = new DbContextOptionsBuilder<EyeProtectDbContext>()
-            .UseMySql(connStr, ServerVersion.AutoDetect(connStr), b => b.UseMicrosoftJson());
+            .UseMySql(connStr, ServerVersion.AutoDetect(connStr));
 
         return new EyeProtectDbContext(builder.Options);
     }
+
 }

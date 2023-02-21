@@ -1,6 +1,11 @@
 using EyeProtect.Manage;
 using Serilog.Events;
 using Serilog;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using System;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 public class Program
 {
@@ -21,9 +26,8 @@ public class Program
         {
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
-            builder.Host.AddAppSettingsSecretsJson()
-                .UseAutofac();
-                //.UseSerilog();
+            builder.Host.AddAppSettingsSecretsJson().UseAutofac();
+            //.UseSerilog();
             await builder.AddApplicationAsync<EyeProtectManagerApiModule>();
             var app = builder.Build();
             await app.InitializeApplicationAsync();

@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using Volo.Abp.AspNetCore;
+using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 
 namespace DeviceManage.Core
 {
-    /// <summary>
-    /// 公共模块
-    /// </summary>
+    [DependsOn(
+    typeof(AbpAspNetCoreModule),
+    typeof(AbpAutofacModule))]
     public class EyeProtectCoreModule : AbpModule
     {
         /// <inheritdoc />
@@ -17,6 +22,11 @@ namespace DeviceManage.Core
             //配置注入
             services.AddSingleton(config);
 
+            // OAuth
+            var oauthSection = config.GetSection("Jwt");
+            if (!oauthSection.Exists()) throw new ArgumentNullException(nameof(oauthSection));
+
+            services.Configure<OAuthOptions>(oauthSection);
         }
     }
 }

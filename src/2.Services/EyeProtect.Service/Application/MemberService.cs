@@ -5,14 +5,12 @@ using EyeProtect.Domain.Members;
 using EyeProtect.Dtos;
 using EyeProtect.Repository;
 using IdentityModel;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Mutone.Core.Utils.Excel;
 using Mutone.Core.Utils;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,12 +18,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-using Volo.Abp.ObjectMapping;
 using Volo.Abp.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.EntityFrameworkCore;
 
 namespace EyeProtect.Application
@@ -74,10 +69,10 @@ namespace EyeProtect.Application
         /// 生成账号
         /// </summary>
         /// <returns></returns>
-        public async Task<Result> MakeAccount()
+        public async Task<Result> MakeAccount(int number)
         {
             var memberList = new List<Member>();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < number; i++)
             {
                 var account = Guid.NewGuid().ToString("N");
                 var member = new Member()
@@ -85,7 +80,7 @@ namespace EyeProtect.Application
                     Account = account,
                     Password = account.Substring(account.Length - 6),
                     IsAdmin = false,
-                    AccountType = Core.Enums.AccountType.UnSale
+                    AccountType = AccountType.UnSale
                 };
                 memberList.Add(member);
             }

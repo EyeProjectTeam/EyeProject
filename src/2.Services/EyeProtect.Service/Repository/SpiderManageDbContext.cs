@@ -4,12 +4,13 @@ using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using EyeProtect.Domain.Members;
 using EyeProtect.Members;
+using EyeProtect.Repository;
+using Volo.Abp.DependencyInjection;
 
 namespace EyeProtect.Fetch.Service.Repository
 {
-
-    [ConnectionStringName("Default")]
-    public class EyeProtectDbContext : AbpDbContext<EyeProtectDbContext>
+    [ReplaceDbContext(typeof(IEyeProtectDbContext))]
+    public class EyeProtectDbContext : AbpDbContext<EyeProtectDbContext>, IEyeProtectDbContext
     {
         #region DbSet
 
