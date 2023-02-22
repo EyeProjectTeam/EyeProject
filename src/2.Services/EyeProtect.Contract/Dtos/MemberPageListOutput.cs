@@ -19,6 +19,11 @@ namespace EyeProtect.Dtos
         public string Account { get; set; }
 
         /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
         /// 账号类型
         /// </summary>
         public AccountType? AccountType { get; set; }

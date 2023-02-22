@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using EyeProtect.Core.Domain;
 using EyeProtect.Members;
 using EyeProtect.Core.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace EyeProtect.Domain.Members
 {
@@ -15,11 +16,13 @@ namespace EyeProtect.Domain.Members
         /// <summary>
         /// 账号
         /// </summary>
+        [StringLength(12)]
         public string Account { get; set; }
 
         /// <summary>
         /// 密码
         /// </summary>
+        [StringLength(50)]
         public string Password { get; set; }
 
         /// <summary>

@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
+﻿using Autofac;
+using AutoMapper.Configuration;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.Autofac;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Modularity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using EyeProtect.Core.Options;
 
 namespace DeviceManage.Core
 {
@@ -26,7 +32,36 @@ namespace DeviceManage.Core
             var oauthSection = config.GetSection("Jwt");
             if (!oauthSection.Exists()) throw new ArgumentNullException(nameof(oauthSection));
 
-            services.Configure<OAuthOptions>(oauthSection);
+            services.Configure<JwtOptions>(oauthSection);
+        }
+
+        private static bool _staticMapperInitialized;
+        private static readonly object _autoMapperSyncObj = new object();
+        public override void PostConfigureServices(ServiceConfigurationContext context)
+        {
+            var services = context.Services;
+
+            // AutoMapper
+            var config = new MapperConfigurationExpression();
+            var actions = services.GetObject<AutoMapperConfig>()?.MapActions;
+            if (actions != null)
+            {
+                foreach (var action in actions)
+                {
+                    action(config);
+                }
+            }
+            lock (_autoMapperSyncObj)
+            {
+                if (!_staticMapperInitialized)
+                {
+                    _staticMapperInitialized = true;
+                    Mapper.Initialize(config);
+                }
+            }
+            services.AddSingleton(Mapper.Instance);
+            services.RemoveAll<IObjectAccessor<AutoMapperConfig>>();
+
         }
     }
 }

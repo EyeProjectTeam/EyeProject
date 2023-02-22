@@ -2,6 +2,7 @@
 using EyeProtect.Application;
 using EyeProtect.Dtos;
 using EyeProtect.Manage.Controllers.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -43,7 +44,7 @@ namespace EyeProtect.Manage.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [HttpPost("Login")]
+        [HttpPost("Login"), AllowAnonymous]
         public async Task<Result<loginOuput>> Login([FromBody] loginInput input)
         {
             return await _memberService.LoginAsync(input);

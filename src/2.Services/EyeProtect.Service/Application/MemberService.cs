@@ -22,6 +22,7 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using EyeProtect.Core.Utils;
 
 namespace EyeProtect.Application
 {
@@ -38,7 +39,7 @@ namespace EyeProtect.Application
         /// ctor
         /// </summary>
         public MemberService(IMemberRepository memberRepository,
-            IOptionsSnapshot<JwtOptions> jwtOptions,
+            IOptions<JwtOptions> jwtOptions,
             IConfiguration configuration)
         {
             _configuration = configuration;
@@ -53,15 +54,17 @@ namespace EyeProtect.Application
         /// <returns></returns>
         public async Task<Result<loginOuput>> LoginAsync(loginInput input)
         {
-            var md5Pwd = input.Password.ToMd5();
-            var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account && x.Password == md5Pwd);
+
+            var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account && x.Password == input.Password);
             if (member == null)
             {
                 return (ResultCode.Fail, "用户名或密码不匹配，登录失败");
             }
+            var isSupAdmin = _configuration["SuperAdmin:Name"] == member.Name;
             var token = GenerateJwt(member);
-            var loginOutput = ObjectMapper.Map<Member, loginOuput>(member);
+            var loginOutput = member.MapTo<loginOuput>();
             loginOutput.Token = token;
+            loginOutput.Role = isSupAdmin ? "SuperAdmin" : member.IsAdmin ? "Admin" : "Member";
             return loginOutput;
         }
 
@@ -77,7 +80,7 @@ namespace EyeProtect.Application
                 var account = Guid.NewGuid().ToString("N");
                 var member = new Member()
                 {
-                    Account = account,
+                    Account = account.Substring(0, 12),
                     Password = account.Substring(account.Length - 6),
                     IsAdmin = false,
                     AccountType = AccountType.UnSale
@@ -96,7 +99,7 @@ namespace EyeProtect.Application
         public async Task<PageResult<MemberPageListOutput>> GetMemberPageList(MemberPageListInput input)
         {
             var query = await GetMemberQueryAsync(input);
-            var result = await query.PageAsync<Member, MemberPageListOutput>(input);
+            var result = await query.ToPageResultAsync<Member, MemberPageListOutput>(input);
             return result;
         }
 
@@ -130,14 +133,13 @@ namespace EyeProtect.Application
         public async Task<IActionResult> ExportMemberList(MemberPageListInput input)
         {
             var fileName = "账号列表";
-            var result = (await GetMemberQueryAsync(input)).ToList();
-            var exportInput = ObjectMapper.Map<List<Member>, List<ExportMemberListInput>>(result);
+            var exportInput = await (await GetMemberQueryAsync(input)).ToPageResultAsync<Member, ExportMemberListInput>(input);
             var excelBytes = ExcelHelper.WriteExcel(new ExcelWorksheetDto<ExportMemberListInput>()
             {
                 WorksheetName = fileName,
                 SerialNumberColumnIndex = 1,
-                Data = exportInput,
-                Heads = new List<ExcelHeadDto>() { new ExcelHeadDto() { Name = fileName }, }
+                Data = exportInput.Data.ToList(),
+                Heads = new List<ExcelHeadDto>() { new ExcelHeadDto() { Name = fileName, SpanCells = new[] { 1, 1, 1, 18 } }, }
             });
             return new FileContentResult(excelBytes, "application/octet-stream")
             {
@@ -150,10 +152,6 @@ namespace EyeProtect.Application
         private async Task<IQueryable<Member>> GetMemberQueryAsync(MemberPageListInput input)
         {
             var query = await _memberRepository.GetQueryableAsync();
-            if (!input.Account.IsNullOrWhiteSpace())
-            {
-                query = query.Where(x => x.Account == input.Account);
-            }
             if (input.AccountType.HasValue)
             {
                 query = query.Where(x => x.AccountType == input.AccountType);
@@ -179,8 +177,8 @@ namespace EyeProtect.Application
                 new Claim(JwtClaimTypes.Issuer, _jwtOptions.Issuer),
                 new Claim(AbpClaimTypes.UserId, member.Account),
                 new Claim(JwtClaimTypes.Id, member.Id.ToString()),
-                new Claim(AbpClaimTypes.UserName, member.Name),
-                new Claim(AbpClaimTypes.Email, member.Email),
+                new Claim(AbpClaimTypes.UserName, member.Name??string.Empty),
+                new Claim(AbpClaimTypes.Email, member.Email??string.Empty),
                 new Claim(AbpClaimTypes.Role,isSupAdmin?"SuperAdmin": member.IsAdmin?"Admin":"Member")
             };
 

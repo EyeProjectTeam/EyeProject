@@ -51,22 +51,22 @@ namespace EyeProtect.Manage.Configuration
                 //option.SchemaFilter<ResultCodeToEnumSchemaFilter>();
 
                 // 接口安全验证                
-                //option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
-                //{
-                //    Type = SecuritySchemeType.OAuth2,
-                //    Flows = new OpenApiOAuthFlows()
-                //    {
+                option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
+                    {
 
-                //        ClientCredentials = new OpenApiOAuthFlow()
-                //        {
-                //            TokenUrl = new Uri($"{config.GetValue<string>("OAuth:Authority")}connect/token"),
-                //            Scopes =
-                //            {
-                //                {ApiScopes.TicketWindowCommonApi, ApiScopes.TicketWindowCommonApi}
-                //            }
-                //        }
-                //    }
-                //});
+                        ClientCredentials = new OpenApiOAuthFlow()
+                        {
+                            //TokenUrl = new Uri($"/connect/token"),
+                            //Scopes =
+                            //{
+                            //    {ApiScopes.TicketWindowCommonApi, ApiScopes.TicketWindowCommonApi}
+                            //}
+                        }
+                    }
+                });
 
                 option.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
                 {

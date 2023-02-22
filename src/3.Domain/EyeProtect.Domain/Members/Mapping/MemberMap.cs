@@ -15,7 +15,7 @@ namespace EyeProtect.Domain.Mapping
             b.HasKey(x => x.Id);
             b.Property(x => x.Id).ValueGeneratedOnAdd();
 
-
+            b.HasIndex(x => x.Account).IsUnique();
         }
     }
 }
