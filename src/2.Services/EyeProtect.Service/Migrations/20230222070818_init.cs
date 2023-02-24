@@ -42,6 +42,12 @@ namespace EyeProtect.Service.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateIndex(
+               name: "IX_Members_Account",
+               table: "Members",
+               column: "Account",
+               unique: true);
+
             migrationBuilder.CreateTable(
                 name: "OperationRecords",
                 columns: table => new
@@ -70,8 +76,7 @@ namespace EyeProtect.Service.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_OperationRecords_MemberId",
                 table: "OperationRecords",
-                column: "MemberId",
-                unique: true);
+                column: "MemberId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

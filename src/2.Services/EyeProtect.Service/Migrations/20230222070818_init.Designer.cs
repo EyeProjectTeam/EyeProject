@@ -12,7 +12,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace EyeProtect.Service.Migrations
 {
     [DbContext(typeof(EyeProtectDbContext))]
-    [Migration("20230222061231_init")]
+    [Migration("20230222070818_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

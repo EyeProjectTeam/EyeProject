@@ -51,7 +51,7 @@ namespace EyeProtect.Domain.Members
         /// <summary>
         /// 账号类型
         /// </summary>
-        public AccountType? AccountType { get; set; }
+        public AccountType AccountType { get; set; }
 
         /// <summary>
         /// 操作记录

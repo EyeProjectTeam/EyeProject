@@ -63,6 +63,19 @@ namespace EyeProtect.Manage
             services.AddMvc()
                 .AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
 
+            //auth policy
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AdminAuth", policy => policy.RequireAssertion(context =>
+            //    {
+            //        return context.User.IsInRole("Admin");
+            //    }));
+            //    options.AddPolicy("SupAdmin", policy => policy.RequireAssertion(context =>
+            //    {
+            //        context.User.HasClaim(claim => claim.Value)
+            //    }));
+            //});
+
             // Swagger
             services.AddSwagger(config, SwaggerDocs);
         }

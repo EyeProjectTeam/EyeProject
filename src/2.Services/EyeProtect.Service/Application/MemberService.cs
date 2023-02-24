@@ -23,6 +23,8 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using EyeProtect.Core.Utils;
+using EyeProtect.Repository.Impl;
+using System.Diagnostics.Metrics;
 
 namespace EyeProtect.Application
 {
@@ -33,16 +35,16 @@ namespace EyeProtect.Application
     {
         private readonly IMemberRepository _memberRepository;
         private readonly JwtOptions _jwtOptions;
-        private readonly IConfiguration _configuration;
+        private readonly SupAdminOptions _supAdminOption;
 
         /// <summary>
         /// ctor
         /// </summary>
         public MemberService(IMemberRepository memberRepository,
             IOptions<JwtOptions> jwtOptions,
-            IConfiguration configuration)
+            IOptions<SupAdminOptions> supAdminOption)
         {
-            _configuration = configuration;
+            _supAdminOption = supAdminOption.Value;
             _jwtOptions = jwtOptions.Value;
             _memberRepository = memberRepository;
         }
@@ -54,17 +56,34 @@ namespace EyeProtect.Application
         /// <returns></returns>
         public async Task<Result<loginOuput>> LoginAsync(loginInput input)
         {
-
-            var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account && x.Password == input.Password);
-            if (member == null)
+            var loginOutput = new loginOuput();
+            if (input.Account == _supAdminOption.Name)
             {
-                return (ResultCode.Fail, "用户名或密码不匹配，登录失败");
+                #region 超级管理员登录
+
+                if (input.Password != _supAdminOption.Pwd)
+                {
+                    return (ResultCode.Fail, "用户名或密码不匹配，登录失败");
+                }
+                loginOutput.Role = _supAdminOption.Name;
+                loginOutput.Name = _supAdminOption.Name;
+                loginOutput.Id = 123456;
+                loginOutput.Account = _supAdminOption.Name;
+
+                #endregion
             }
-            var isSupAdmin = _configuration["SuperAdmin:Name"] == member.Name;
-            var token = GenerateJwt(member);
-            var loginOutput = member.MapTo<loginOuput>();
+            else
+            {
+                var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account && x.Password == input.Password);
+                if (member == null)
+                {
+                    return (ResultCode.Fail, "用户名或密码不匹配，登录失败");
+                }
+                loginOutput = member.MapTo<loginOuput>();
+                loginOutput.Role = member.IsAdmin ? "Admin" : "Member";
+            }
+            var token = GenerateJwt(loginOutput);
             loginOutput.Token = token;
-            loginOutput.Role = isSupAdmin ? "SuperAdmin" : member.IsAdmin ? "Admin" : "Member";
             return loginOutput;
         }
 
@@ -77,15 +96,13 @@ namespace EyeProtect.Application
             var memberList = new List<Member>();
             for (int i = 0; i < number; i++)
             {
-                var account = Guid.NewGuid().ToString("N");
-                var member = new Member()
-                {
-                    Account = account.Substring(0, 12),
-                    Password = account.Substring(account.Length - 6),
-                    IsAdmin = false,
-                    AccountType = AccountType.UnSale
-                };
-                memberList.Add(member);
+                memberList.Add(MakeMember(false));
+            }
+            //是否存在管理员
+            var admins = await _memberRepository.GetListAsync(x => x.IsAdmin);
+            if (!admins.Any())
+            {
+                memberList.Add(MakeMember(true));
             }
             await _memberRepository.InsertManyAsync(memberList);
             return Result.Ok();
@@ -149,6 +166,19 @@ namespace EyeProtect.Application
 
         #region Method
 
+        private Member MakeMember(bool isAdmin)
+        {
+            var account = Guid.NewGuid().ToString("N");
+            var member = new Member()
+            {
+                Account = account.Substring(0, 12),
+                Password = account.Substring(account.Length - 6),
+                IsAdmin = isAdmin,
+                AccountType = AccountType.UnSale
+            };
+            return member;
+        }
+
         private async Task<IQueryable<Member>> GetMemberQueryAsync(MemberPageListInput input)
         {
             var query = await _memberRepository.GetQueryableAsync();
@@ -156,6 +186,7 @@ namespace EyeProtect.Application
             {
                 query = query.Where(x => x.AccountType == input.AccountType);
             }
+            query = query.Where(x => !x.IsAdmin);
             return query;
         }
 
@@ -164,9 +195,8 @@ namespace EyeProtect.Application
         /// </summary>
         /// <param name="member"></param>
         /// <returns></returns>
-        private string GenerateJwt(Member member)
+        private string GenerateJwt(loginOuput member)
         {
-            var isSupAdmin = _configuration["SuperAdmin:Name"] == member.Name;
             var dateNow = Clock.Now;
             var expirationTime = dateNow.AddHours(_jwtOptions.ExpirationTime);
             var key = Encoding.ASCII.GetBytes(_jwtOptions.SecurityKey);
@@ -175,11 +205,11 @@ namespace EyeProtect.Application
             {
                 new Claim(JwtClaimTypes.Audience, _jwtOptions.Audience),
                 new Claim(JwtClaimTypes.Issuer, _jwtOptions.Issuer),
-                new Claim(AbpClaimTypes.UserId, member.Account),
+                new Claim(AbpClaimTypes.UserId, member.Account??string.Empty),
                 new Claim(JwtClaimTypes.Id, member.Id.ToString()),
                 new Claim(AbpClaimTypes.UserName, member.Name??string.Empty),
                 new Claim(AbpClaimTypes.Email, member.Email??string.Empty),
-                new Claim(AbpClaimTypes.Role,isSupAdmin?"SuperAdmin": member.IsAdmin?"Admin":"Member")
+                new Claim(AbpClaimTypes.Role,member.Role)
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor()

@@ -33,6 +33,7 @@ namespace DeviceManage.Core
             if (!oauthSection.Exists()) throw new ArgumentNullException(nameof(oauthSection));
 
             services.Configure<JwtOptions>(oauthSection);
+            services.Configure<SupAdminOptions>(config.GetSection("SuperAdmin"));
         }
 
         private static bool _staticMapperInitialized;

@@ -29,18 +29,6 @@ namespace EyeProtect.Manage.Controllers
             _memberService = memberService;
         }
 
-
-        /// <summary>
-        /// 生成账号
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        [HttpPost("MakeAccount")]
-        public Task<Result> MakeAccount(int number)
-        {
-            return _memberService.MakeAccount(number);
-        }
-
         /// <summary>
         /// 账号列表
         /// </summary>

@@ -33,7 +33,7 @@ namespace EyeProtect.Manage.Controllers
         /// 登录页
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Login")]
+        [HttpGet("Login"), AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -54,7 +54,7 @@ namespace EyeProtect.Manage.Controllers
         /// 首页
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Index")]
+        [HttpGet("Index"), AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -64,8 +64,8 @@ namespace EyeProtect.Manage.Controllers
         /// 账号列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("AccountList")]
-        public IActionResult AccountList()
+        [HttpGet("MenberList"), AllowAnonymous]
+        public IActionResult MenberList()
         {
             return View();
         }
