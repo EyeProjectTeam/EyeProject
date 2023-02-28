@@ -9,12 +9,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
+using EyeProtect.CoreWeb.Filters;
 
 namespace EyeProtect.Manage
 {
@@ -60,8 +63,16 @@ namespace EyeProtect.Manage
             services.AddControllersWithViews();
 
             // MVC
-            services.AddMvc()
-                .AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
+            services.AddMvc().AddNewtonsoftJson(jsonOptions =>
+            {
+                jsonOptions.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+                jsonOptions.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                jsonOptions.SerializerSettings.ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                };
+            }).AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
+
 
             //auth policy
             //services.AddAuthorization(options =>
@@ -96,6 +107,7 @@ namespace EyeProtect.Manage
             app.UseAbpSecurityHeaders();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<HttpOperationRecord>();

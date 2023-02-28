@@ -116,7 +116,7 @@ namespace EyeProtect.Manage.Configuration
                                 OnMessageReceived = currentContext =>
                                 {
                                     var path = currentContext.HttpContext.Request.Path;
-                                    if (path.StartsWithSegments("/login"))
+                                    if (path.StartsWithSegments("/System/Login"))
                                     {
                                         return Task.CompletedTask;
                                     }

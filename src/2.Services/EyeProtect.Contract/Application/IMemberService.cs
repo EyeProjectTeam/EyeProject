@@ -1,4 +1,5 @@
 ﻿using EyeProject.Core.Dto;
+using EyeProtect.Contract.Dtos;
 using EyeProtect.Core.Enums;
 using EyeProtect.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,10 @@ namespace EyeProtect.Application
 
         Task<PageResult<MemberPageListOutput>> GetMemberPageList(MemberPageListInput input);
 
-        Task<Result> UpdateAccountType(long id, AccountType accountType);
+        Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType, AccountType accountType);
 
         Task<IActionResult> ExportMemberList(MemberPageListInput input);
 
-
+        Task<Result<StaticAccountDataOutput>> StaticAccountData();
     }
 }

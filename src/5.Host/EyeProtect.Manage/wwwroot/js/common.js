@@ -2,14 +2,32 @@ var baseUrl = '/v1/eyeProtect/manage/api';
 
 // 添加全局请求头
 $(document).ajaxSend(function (event, xhr) {
-    xhr.setRequestHeader('Authorization', localStorage.getItem("token")); // 增加一个自定义请求头
+    xhr.setRequestHeader('Authorization', 'bearer ' + $.cookie('EyeProtect.Manager.Api')); // 增加一个自定义请求头
 });
 
-function setToken(token) {
-    localStorage.setItem('token', token);
+$.ajaxSetup({
+    converters: {
+        "text json": function (result) {
+            var data = jQuery.parseJSON(result);
+            //未授权
+            if (data.Code == 401) {
+                TokenExpire();
+            }
+            return data;
+        }
+    }
+});
+
+function TokenExpire() {
+    window.location.href = baseUrl + "/System/TimeOut";
 }
-function setRole(role) {
-    localStorage.setItem('Role', role);
+
+function setToken(token) {
+    $.cookie('EyeProtect.Manager.Api', token, { path: '/', expires: 1 });
+}
+
+function delToken() {
+    $.cookie('EyeProtect.Manager.Api', null, { path: '/' });
 }
 
 layui.config({

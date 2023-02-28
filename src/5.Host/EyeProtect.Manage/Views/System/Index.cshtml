@@ -1,4 +1,6 @@
-﻿@{
+﻿@using EyeProtect.Contract.Dtos;
+@model StaticAccountDataOutput
+@{
     ViewData["Title"] = "Eye后台管理";
     ViewData["Tabs"] = "后台主页";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,7 +17,7 @@
                             </div>
                             <div class="right-text-con">
                                 <p class="name">账号已使用</p>
-                                <p><span class="color-org">89</span>数据<span class="iconfont">&#xe628;</span></p>
+                                <p><span class="color-org">@Model.Used</span>数据<span class="iconfont">&#xe628;</span></p>
                             </div>
                         </a>
                     </li>
@@ -26,10 +28,22 @@
                             </div>
                             <div class="right-text-con">
                                 <p class="name">账号未使用</p>
-                                <p><span class="color-blue">189</span>数据<span class="iconfont">&#xe628;</span></p>
+                                <p><span class="color-blue">@Model.UnUse</span>数据<span class="iconfont">&#xe628;</span></p>
                             </div>
                         </a>
                     </li>
+                    <li class="col-sm-12 col-md-4 col-xs-12">
+                        <a href="javascript:;" class="clearfix">
+                            <div class="icon-bg bg-org f-l">
+                                <span class="iconfont">&#xe606;</span>
+                            </div>
+                            <div class="right-text-con">
+                                <p class="name">账号未售出</p>
+                                <p><span class="color-org">@Model.UnSale</span>数据<span class="iconfont">&#xe628;</span></p>
+                            </div>
+                        </a>
+                    </li>
+
                     <li class="col-sm-12 col-md-4 col-xs-12">
                         <a href="javascript:;" class="clearfix">
                             <div class="icon-bg bg-green f-l">
@@ -37,7 +51,7 @@
                             </div>
                             <div class="right-text-con">
                                 <p class="name">账号已过期</p>
-                                <p><span class="color-green">221</span>数据<span class="iconfont">&#xe60f;</span></p>
+                                <p><span class="color-green">@Model.Expire</span>数据<span class="iconfont">&#xe60f;</span></p>
                             </div>
                         </a>
                     </li>
@@ -74,7 +88,7 @@
                     </div>
                     <div class="col-md-2">
                         <p class="title">服务器当前时间</p>
-                        <span class="info">2023-06-22 11:37:35</span>
+                        <span class="info">@Model.ServerDate</span>
                     </div>
                 </div>
             </div>

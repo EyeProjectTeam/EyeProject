@@ -47,6 +47,8 @@ namespace EyeProtect.Dtos
         /// </summary>
         public AccountType AccountType { get; set; }
 
+        public int ExpirationTime { get; set; }
+
         /// <summary>
         /// 是否可用
         /// </summary>

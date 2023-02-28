@@ -13,7 +13,7 @@ namespace EyeProtect.Dtos
         /// <summary>
         /// 账号
         /// </summary>
-        [Query(QueryCompare.Equal)]
+        [Query(QueryCompare.Like)]
         public string Account { get; set; }
 
         /// <summary>

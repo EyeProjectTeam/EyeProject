@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="~/js/common.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+    <style>
+        body, h3, span {
+            background: #fff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .error-page {
+            clear: both;
+            margin: 10% auto;
+            width: 700px;
+            height: 500px;
+            color: #999;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+            .error-page h3 {
+                display: block;
+                font-weight: normal;
+                padding: 20px 0 10px 0;
+                margin: 0;
+                font-size: 19px;
+            }
+
+            .error-page a {
+                color: #59d6e2;
+                margin-left: 10px;
+            }
+
+            .error-page p {
+                display: block;
+                line-height: 30px;
+                font-size: 14px;
+                padding: 0;
+                margin: 0;
+            }
+    </style>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="error-page">
+        <img src="~/images/302.png" width="393" height="290" alt="" />
+        <h3>Hi 登陆超时，三秒钟之后跳转到登陆页面。</h3>
+        @*<p>服务器错误，三秒钟之后跳转到登陆页面。</p>*@
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        setTimeout(function () {
+            window.location.href = baseUrl + "/System/Login";
+        }, 3000);
+    })
+</script>

@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="~/css/admin.css" />
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.cookie.min.js"></script>
 <script src="~/layui/layui.js"></script>
 <script src="~/js/common.js" type="text/javascript" charset="utf-8"></script>
 <script src="~/js/main.js" type="text/javascript" charset="utf-8"></script>
@@ -13,11 +14,11 @@
     <!--侧边栏-->
     <div class="main-layout-side">
         <div style="font-size: 32px;color: white;margin-left: 10px;">
-            爱眼科普器
+            <a href="/v1/eyeProtect/manage/api/system/Index"><i>爱眼科普器</i></a>
         </div>
         <ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
             <li class="layui-nav-item">
-                <a href="/system/MenberList"><i class="iconfont">&#xe604;</i>账号管理</a>
+                <a href="/v1/eyeProtect/manage/api/system/MemberList"><i class="iconfont">&#xe604;</i>账号管理</a>
             </li>
         </ul>
     </div>
@@ -34,7 +35,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息">超级管理员</a>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">退出</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" onclick="Layout();">退出</a></li>
             </ul>
         </div>
         <!--主体内容-->
@@ -61,6 +62,18 @@
 <script type="text/javascript">
     var scope = {
         link: './welcome.html'
+    }
+
+    function Layout() {
+        $.ajax({
+            url: baseUrl + "/System/LogOut",
+            type: "post",
+            success: function (result) {
+                if (result && result.code == 0) {
+                    window.location.replace(baseUrl + "/System/Login");
+                }
+            }
+        });
     }
 </script>
 

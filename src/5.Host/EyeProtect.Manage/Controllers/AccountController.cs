@@ -48,19 +48,22 @@ namespace EyeProtect.Manage.Controllers
         [HttpPost("ExportMemberList")]
         public Task<IActionResult> ExportMemberList(MemberPageListInput input)
         {
-            return _memberService.ExportMemberList(input);
+            var result = _memberService.ExportMemberList(input);
+            return result;
         }
 
         /// <summary>
         /// 更新账号状态
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="operateAccountType"></param>
         /// <param name="accountType"></param>
         /// <returns></returns>
         [HttpPut("UpdateAccountType")]
-        public Task<Result> UpdateAccountType([FromRoute] long id, [FromQuery] AccountType accountType)
+        public Task<Result> UpdateAccountType([FromQuery] long id, [FromBody] OperateAccountType operateAccountType, [FromBody] AccountType accountType)
         {
-            return _memberService.UpdateAccountType(id, accountType);
+            return _memberService.UpdateAccountType(id, operateAccountType, accountType);
         }
+
     }
 }

@@ -25,6 +25,8 @@ using Microsoft.EntityFrameworkCore;
 using EyeProtect.Core.Utils;
 using EyeProtect.Repository.Impl;
 using System.Diagnostics.Metrics;
+using EyeProtect.Contract.Dtos;
+using Microsoft.Extensions.FileProviders;
 
 namespace EyeProtect.Application
 {
@@ -84,6 +86,7 @@ namespace EyeProtect.Application
             }
             var token = GenerateJwt(loginOutput);
             loginOutput.Token = token;
+            loginOutput.ExpirationTime = _jwtOptions.ExpirationTime;
             return loginOutput;
         }
 
@@ -124,22 +127,43 @@ namespace EyeProtect.Application
         /// 更新账号状态
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="operateAccountType">操作类型</param>
         /// <param name="accountType"></param>
         /// <returns></returns>
-        public async Task<Result> UpdateAccountType(long id, AccountType accountType)
+        public async Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType, AccountType accountType)
         {
             var member = await _memberRepository.FirstOrDefaultAsync(x => x.Id == id);
             if (member == null)
             {
                 return (ResultCode.NoRecord, "未查询到账号信息");
             }
-            if (accountType == AccountType.Used && member.AccountType != AccountType.Expire)
+            if (operateAccountType == OperateAccountType.ReSale && member.AccountType != AccountType.Expire)
             {
                 return (ResultCode.InvalidData, "只有未过期的账号才可续期");
             }
             member.AccountType = accountType;
             await _memberRepository.UpdateAsync(member);
             return Result.Ok();
+        }
+
+        /// <summary>
+        /// 统计账号数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Result<StaticAccountDataOutput>> StaticAccountData()
+        {
+            var used = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Used);
+            var unUse = await _memberRepository.CountAsync(x => x.AccountType == AccountType.UnUse);
+            var unSale = await _memberRepository.CountAsync(x => x.AccountType == AccountType.UnSale);
+            var expire = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Expire);
+
+            return Result.FromData(new StaticAccountDataOutput()
+            {
+                UnUse = unUse,
+                UnSale = unSale,
+                Used = used,
+                Expire = expire
+            });
         }
 
         /// <summary>
@@ -150,12 +174,13 @@ namespace EyeProtect.Application
         public async Task<IActionResult> ExportMemberList(MemberPageListInput input)
         {
             var fileName = "账号列表";
-            var exportInput = await (await GetMemberQueryAsync(input)).ToPageResultAsync<Member, ExportMemberListInput>(input);
+            //var exportInput = await (await GetMemberQueryAsync(input)).ToPageResultAsync<Member, ExportMemberListInput>(input);
+            var exportInput = (await (await _memberRepository.GetQueryableAsync()).Where(x => !x.IsAdmin).ToListAsync()).MapTo<List<ExportMemberListInput>>();
             var excelBytes = ExcelHelper.WriteExcel(new ExcelWorksheetDto<ExportMemberListInput>()
             {
                 WorksheetName = fileName,
                 SerialNumberColumnIndex = 1,
-                Data = exportInput.Data.ToList(),
+                Data = exportInput,
                 Heads = new List<ExcelHeadDto>() { new ExcelHeadDto() { Name = fileName, SpanCells = new[] { 1, 1, 1, 18 } }, }
             });
             return new FileContentResult(excelBytes, "application/octet-stream")

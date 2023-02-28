@@ -1,5 +1,7 @@
 ﻿using EyeProject.Core.Dto;
 using EyeProtect.Application;
+using EyeProtect.Contract.Dtos;
+using EyeProtect.Core.Const;
 using EyeProtect.Dtos;
 using EyeProtect.Manage.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -51,21 +53,50 @@ namespace EyeProtect.Manage.Controllers
         }
 
         /// <summary>
+        /// 登出
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("LogOut")]
+        public Result LogOut()
+        {
+            HttpContext.Response.Cookies.Delete(EyeProtectConst.DefaultCookieName);
+            return Result.Ok();
+        }
+
+        /// <summary>
         /// 首页
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Index"), AllowAnonymous]
-        public IActionResult Index()
+        [HttpGet("Index")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _memberService.StaticAccountData();
+            if (result.IsOk())
+            {
+                return View(result.Data);
+            }
+            else
+            {
+                return View(new StaticAccountDataOutput());
+            }
         }
 
         /// <summary>
         /// 账号列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("MenberList"), AllowAnonymous]
-        public IActionResult MenberList()
+        [HttpGet("MemberList")]
+        public IActionResult MemberList()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 超时页
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("TimeOut")]
+        public IActionResult TimeOut()
         {
             return View();
         }

@@ -1,5 +1,7 @@
 ﻿using DeviceManage.Core;
-using Microsoft.Extensions.DependencyInjection;
+using EyeProtect.CoreWeb.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.Modularity;
 
 namespace DeviceManage.CoreWeb
@@ -10,11 +12,20 @@ namespace DeviceManage.CoreWeb
         /// <inheritdoc />
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            var service = context.Services;
+            var services = context.Services;
 
-            //// MVC
-            //service.AddMvc();
+            // Configure MVC
+            Configure<MvcOptions>(p =>
+            {
+                p.Filters.Add<ExceptionResultFilter>();
+                //p.Filters.Add<JsonResultFilter>();
+            });
 
+            /// <summary>
+            /// 阻止跨站点请求伪造
+            /// https://docs.microsoft.com/zh-cn/aspnet/core/security/anti-request-forgery?view=aspnetcore-6.0
+            /// </summary>
+            Configure<AbpAntiForgeryOptions>(options => { options.AutoValidate = false; });
         }
     }
 }
