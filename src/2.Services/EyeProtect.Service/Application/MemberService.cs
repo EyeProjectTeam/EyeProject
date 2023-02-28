@@ -128,9 +128,8 @@ namespace EyeProtect.Application
         /// </summary>
         /// <param name="id"></param>
         /// <param name="operateAccountType">操作类型</param>
-        /// <param name="accountType"></param>
         /// <returns></returns>
-        public async Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType, AccountType accountType)
+        public async Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType)
         {
             var member = await _memberRepository.FirstOrDefaultAsync(x => x.Id == id);
             if (member == null)
@@ -141,7 +140,7 @@ namespace EyeProtect.Application
             {
                 return (ResultCode.InvalidData, "只有未过期的账号才可续期");
             }
-            member.AccountType = accountType;
+            member.AccountType = AccountType.Sale;
             await _memberRepository.UpdateAsync(member);
             return Result.Ok();
         }
@@ -152,16 +151,14 @@ namespace EyeProtect.Application
         /// <returns></returns>
         public async Task<Result<StaticAccountDataOutput>> StaticAccountData()
         {
-            var used = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Used);
-            var unUse = await _memberRepository.CountAsync(x => x.AccountType == AccountType.UnUse);
+            var sale = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Sale);
             var unSale = await _memberRepository.CountAsync(x => x.AccountType == AccountType.UnSale);
             var expire = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Expire);
 
             return Result.FromData(new StaticAccountDataOutput()
             {
-                UnUse = unUse,
                 UnSale = unSale,
-                Used = used,
+                Sale = sale,
                 Expire = expire
             });
         }

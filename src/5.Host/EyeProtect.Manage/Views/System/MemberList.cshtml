@@ -19,10 +19,9 @@
                 <div class="layui-inline">
                     <select name="states" lay-filter="status">
                         <option value="">请选择一个状态</option>
-                        <option value="0">已使用</option>
+                        <option value="0">已售出</option>
                         <option value="1">已过期</option>
-                        <option value="2">未使用</option>
-                        <option value="3">未出售</option>
+                        <option value="2">未出售</option>
                     </select>
                 </div>
                 <button type="button" class="layui-btn layui-btn-normal" lay-submit="search" id="search">搜索</button>
@@ -34,7 +33,7 @@
         </div>
     </div>
 </div>
-
+    
 <script type="text/javascript">
     layui.use('table', function () {
         var table = layui.table;
@@ -149,9 +148,9 @@
 }
 <script type="text/html" id="operate">
     {{#  if(d.accountTypeMsg == '已过期'){ }}
-      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},0,@reSale));" class="layui-table-link">续费</a>
+      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},@reSale));" class="layui-table-link">续费</a>
     {{#  } else if(d.accountTypeMsg == '未出售'){ }}
-      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},0,@sale);" class="layui-table-link">出售</a>
+      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},@sale);" class="layui-table-link">出售</a>
     {{#  } }}
 </script>
 

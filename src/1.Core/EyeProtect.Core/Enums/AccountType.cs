@@ -13,13 +13,11 @@ namespace EyeProtect.Core.Enums
     /// </summary>
     public enum AccountType
     {
-        [Display(Name = "已使用")]
-        Used = 0,
+        [Display(Name = "已售出")]
+        Sale = 0,
         [Display(Name = "已过期")]
         Expire = 1,
-        [Display(Name = "未使用")]
-        UnUse = 2,
         [Display(Name = "未出售")]
-        UnSale = 3,
+        UnSale = 2,
     }
 }

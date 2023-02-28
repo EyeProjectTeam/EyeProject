@@ -20,7 +20,7 @@ namespace EyeProtect.Application
 
         Task<PageResult<MemberPageListOutput>> GetMemberPageList(MemberPageListInput input);
 
-        Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType, AccountType accountType);
+        Task<Result> UpdateAccountType(long id, OperateAccountType operateAccountType);
 
         Task<IActionResult> ExportMemberList(MemberPageListInput input);
 

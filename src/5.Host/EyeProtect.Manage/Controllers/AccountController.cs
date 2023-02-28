@@ -60,9 +60,9 @@ namespace EyeProtect.Manage.Controllers
         /// <param name="accountType"></param>
         /// <returns></returns>
         [HttpPut("UpdateAccountType")]
-        public Task<Result> UpdateAccountType([FromQuery] long id, [FromBody] OperateAccountType operateAccountType, [FromBody] AccountType accountType)
+        public Task<Result> UpdateAccountType([FromQuery] long id, [FromBody] OperateAccountType operateAccountType)
         {
-            return _memberService.UpdateAccountType(id, operateAccountType, accountType);
+            return _memberService.UpdateAccountType(id, operateAccountType);
         }
 
     }

@@ -47,11 +47,14 @@ namespace EyeProtect.Dtos
         /// </summary>
         public AccountType AccountType { get; set; }
 
+        /// <summary>
+        /// 过期时间
+        /// </summary>
         public int ExpirationTime { get; set; }
 
         /// <summary>
         /// 是否可用
         /// </summary>
-        public bool IsAvailable => new[] { AccountType.UnUse, AccountType.Expire }.Contains(AccountType);
+        public bool IsAvailable => new[] { AccountType.Sale }.Contains(AccountType);
     }
 }

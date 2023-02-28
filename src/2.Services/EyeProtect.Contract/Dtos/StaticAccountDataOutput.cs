@@ -8,9 +8,7 @@ namespace EyeProtect.Contract.Dtos
 {
     public class StaticAccountDataOutput
     {
-        public int Used { get; set; }
-
-        public int UnUse { get; set; }
+        public int Sale { get; set; }
 
         public int UnSale { get; set; }
 
