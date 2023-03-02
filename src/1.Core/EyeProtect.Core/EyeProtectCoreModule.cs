@@ -11,6 +11,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Modularity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using EyeProtect.Core.Options;
+using EyeProtect.Core.Cache.Commons;
 
 namespace DeviceManage.Core
 {
@@ -25,15 +26,23 @@ namespace DeviceManage.Core
             var services = context.Services;
             var config = context.Services.GetConfiguration();
 
-            //配置注入
-            services.AddSingleton(config);
-
             // OAuth
             var oauthSection = config.GetSection("Jwt");
             if (!oauthSection.Exists()) throw new ArgumentNullException(nameof(oauthSection));
 
             services.Configure<JwtOptions>(oauthSection);
             services.Configure<SupAdminOptions>(config.GetSection("SuperAdmin"));
+            services.Configure<AccountLockOptions>(config.GetSection("AccountLock"));
+
+            // Cache，默认缓存时间：30分钟， 内存+Redis
+            Configure<CacheOptions>(options =>
+            {
+                options.CacheOption(CacheOptions.DefaultCacheName, p =>
+                {
+                    p.AbsoluteExpire = TimeSpan.FromMinutes(30);
+                    p.StoragePolicy = CacheStoragePolicy.Memory;
+                });
+            });
         }
 
         private static bool _staticMapperInitialized;

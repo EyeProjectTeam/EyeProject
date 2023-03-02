@@ -11,6 +11,7 @@
 		<PackageReference Include="IdentityModel" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="StackExchange.Redis" Version="2.6.96" />
 		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="6.0.3" />
 		<PackageReference Include="Volo.Abp.Core" Version="6.0.3" />
@@ -21,7 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Cache\" />
 		<Folder Include="Runtime\" />
 	</ItemGroup>
 

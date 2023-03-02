@@ -15,6 +15,9 @@ namespace EyeProtect.Core.Enums
         [Display(Name = "登入")]
         Login = 1,
 
+        [Display(Name = "登入密码错误")]
+        PwdError = 1,
+
         [Display(Name = "登出")]
         Logout = 2,
 
@@ -22,9 +25,6 @@ namespace EyeProtect.Core.Enums
         Engine = 3,
 
         [Display(Name = "管理端")]
-        Manager = 4,
-
-        [Display(Name = "支付")]
-        Pay = 5,
+        Manager = 4
     }
 }

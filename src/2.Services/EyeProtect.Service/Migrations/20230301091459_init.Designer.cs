@@ -12,7 +12,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace EyeProtect.Service.Migrations
 {
     [DbContext(typeof(EyeProtectDbContext))]
-    [Migration("20230222070818_init")]
+    [Migration("20230301091459_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace EyeProtect.Service.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<int?>("AccountType")
+                    b.Property<int>("AccountType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationTime")
@@ -85,7 +85,8 @@ namespace EyeProtect.Service.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime(6)")
@@ -96,7 +97,8 @@ namespace EyeProtect.Service.Migrations
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("Ip")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -112,10 +114,15 @@ namespace EyeProtect.Service.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("MemberName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("OperrationType")
                         .HasColumnType("int");
+
+                    b.Property<string>("Roles")
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
 

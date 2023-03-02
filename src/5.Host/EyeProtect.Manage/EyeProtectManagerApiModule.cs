@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using EyeProtect.CoreWeb.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EyeProtect.Manage
 {
@@ -32,7 +33,8 @@ namespace EyeProtect.Manage
         /// </summary>
         private readonly (string Name, string Title)[] SwaggerDocs =
         {
-            (GroupName.ManagerApi, "爱眼接口文档")
+            (GroupName.ManagerApi, "爱眼管理端接口文档"),
+            (GroupName.EngineApi, "爱眼引擎端接口文档")
         };
 
         public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
@@ -110,8 +112,8 @@ namespace EyeProtect.Manage
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiddleware<HttpOperationRecord>();
             app.UseUnitOfWork();
+            app.UseMiddleware<HttpOperationRecord>();
             app.UseEndpoints(endpoints =>
             {
                 // MVC

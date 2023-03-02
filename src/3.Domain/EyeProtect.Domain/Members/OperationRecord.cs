@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using EyeProtect.Core.Domain;
 using EyeProtect.Core.Enums;
 
@@ -15,23 +10,35 @@ namespace EyeProtect.Members
     public class OperationRecord : Entity<long>
     {
         /// <summary>
-        /// 会员Id
+        /// ctor
         /// </summary>
-        public long MemberId { get; set; }
+        /// <param name="account"></param>
+        /// <param name="ip"></param>
+        /// <param name="operrationType"></param>
+        public OperationRecord(string account, string ip, OperrationType operrationType)
+        {
+            Account = account;
+            Ip = ip;
+            OperrationType = operrationType;
+        }
+
 
         /// <summary>
         /// 账号
         /// </summary>
+        [StringLength(12)]
         public string Account { get; set; }
 
         /// <summary>
         /// 会员姓名
         /// </summary>
+        [StringLength(30)]
         public string MemberName { get; set; }
 
         /// <summary>
         /// IPAddress
         /// </summary>
+        [StringLength(100)]
         public string Ip { get; set; }
 
         /// <summary>

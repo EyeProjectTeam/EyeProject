@@ -18,7 +18,7 @@ namespace DeviceManage.CoreWeb
             Configure<MvcOptions>(p =>
             {
                 p.Filters.Add<ExceptionResultFilter>();
-                //p.Filters.Add<JsonResultFilter>();
+                p.Filters.Add<HttpLogFilter>();
             });
 
             /// <summary>

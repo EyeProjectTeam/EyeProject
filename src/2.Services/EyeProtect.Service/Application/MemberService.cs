@@ -6,7 +6,6 @@ using EyeProtect.Dtos;
 using EyeProtect.Repository;
 using IdentityModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Mutone.Core.Utils.Excel;
@@ -23,10 +22,10 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using EyeProtect.Core.Utils;
-using EyeProtect.Repository.Impl;
-using System.Diagnostics.Metrics;
 using EyeProtect.Contract.Dtos;
-using Microsoft.Extensions.FileProviders;
+using EyeProtect.Core.Cache;
+using EyeProtect.Core;
+using AutoMapper.QueryableExtensions.Impl;
 
 namespace EyeProtect.Application
 {
@@ -36,19 +35,28 @@ namespace EyeProtect.Application
     public class MemberService : ApplicationService, IMemberService
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IOperationRecordRepository _operationRecordRepository;
+        private readonly ICache<string> _cache;
         private readonly JwtOptions _jwtOptions;
         private readonly SupAdminOptions _supAdminOption;
+        private readonly AccountLockOptions _accountLockOptions;
 
         /// <summary>
         /// ctor
         /// </summary>
         public MemberService(IMemberRepository memberRepository,
             IOptions<JwtOptions> jwtOptions,
-            IOptions<SupAdminOptions> supAdminOption)
+            IOptions<SupAdminOptions> supAdminOption,
+            IOptions<AccountLockOptions> accountLockOptions,
+            IOperationRecordRepository operationRecordRepository,
+            ICache<string> cache)
         {
             _supAdminOption = supAdminOption.Value;
             _jwtOptions = jwtOptions.Value;
+            _accountLockOptions = accountLockOptions.Value;
             _memberRepository = memberRepository;
+            _operationRecordRepository = operationRecordRepository;
+            _cache = cache;
         }
 
         /// <summary>
@@ -76,10 +84,24 @@ namespace EyeProtect.Application
             }
             else
             {
-                var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account && x.Password == input.Password);
+                var key = $"lockAccount:{input.Account}";
+                if (await _cache.ExistsAsync(key))
+                {
+                    return (ResultCode.CallLimited, "超出登录次数限制，账户已被锁定");
+                }
+                var member = await _memberRepository.FirstOrDefaultAsync(x => x.Account == input.Account);
                 if (member == null)
                 {
-                    return (ResultCode.Fail, "用户名或密码不匹配，登录失败");
+                    return (ResultCode.NoRecord, "用户名或密码不匹配，登录失败");
+                }
+                if (member.Password != input.Password)
+                {
+                    var lockCount = await LockAccountAsync(key);
+                    if (lockCount == 0)
+                    {
+                        return (ResultCode.SpaFailed, $"超出登录次数限制，账户被锁定");
+                    }
+                    return (ResultCode.SpaFailed, $"用户名或密码不匹配，登录失败，剩余重试次数：{lockCount}");
                 }
                 loginOutput = member.MapTo<loginOuput>();
                 loginOutput.Role = member.IsAdmin ? "Admin" : "Member";
@@ -187,6 +209,18 @@ namespace EyeProtect.Application
         }
 
         #region Method
+
+        private async Task<int> LockAccountAsync(string key)
+        {
+            //锁定范围起始时间
+            var startDate = DateTime.Now.AddMinutes(_accountLockOptions.LockRange * -1);
+            var lockCount = await _operationRecordRepository.CountAsync(x => x.CreationTime >= startDate);
+            if (lockCount == _accountLockOptions.LockNum)
+            {
+                await _cache.SetAsync<string>(key, "1", TimeSpan.FromMinutes(_accountLockOptions.LockTime));
+            }
+            return _accountLockOptions.LockNum - lockCount;
+        }
 
         private Member MakeMember(bool isAdmin)
         {

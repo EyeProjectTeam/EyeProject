@@ -12,5 +12,10 @@ namespace EyeProtect.Core.Const
         /// 管理端接口
         /// </summary>
         public const string ManagerApi = "ManagerApi";
+
+        /// <summary>
+        /// 引擎端
+        /// </summary>
+        public const string EngineApi = "EngineApi";
     }
 }

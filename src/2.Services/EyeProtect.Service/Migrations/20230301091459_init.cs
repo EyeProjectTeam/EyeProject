@@ -30,7 +30,7 @@ namespace EyeProtect.Service.Migrations
                     Email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AccountType = table.Column<int>(type: "int", nullable: true),
+                    AccountType = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
@@ -42,12 +42,6 @@ namespace EyeProtect.Service.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-               name: "IX_Members_Account",
-               table: "Members",
-               column: "Account",
-               unique: true);
-
             migrationBuilder.CreateTable(
                 name: "OperationRecords",
                 columns: table => new
@@ -55,11 +49,13 @@ namespace EyeProtect.Service.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MemberId = table.Column<long>(type: "bigint", nullable: false),
-                    Account = table.Column<string>(type: "longtext", nullable: true)
+                    Roles = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MemberName = table.Column<string>(type: "longtext", nullable: true)
+                    Account = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ip = table.Column<string>(type: "longtext", nullable: true)
+                    MemberName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Ip = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OperrationType = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -77,6 +73,12 @@ namespace EyeProtect.Service.Migrations
                 name: "IX_OperationRecords_MemberId",
                 table: "OperationRecords",
                 column: "MemberId");
+
+            migrationBuilder.CreateIndex(
+               name: "IX_Members_Account",
+               table: "Members",
+               column: "Account",
+               unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

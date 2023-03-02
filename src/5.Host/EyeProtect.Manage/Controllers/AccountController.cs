@@ -57,7 +57,6 @@ namespace EyeProtect.Manage.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="operateAccountType"></param>
-        /// <param name="accountType"></param>
         /// <returns></returns>
         [HttpPut("UpdateAccountType")]
         public Task<Result> UpdateAccountType([FromQuery] long id, [FromBody] OperateAccountType operateAccountType)
