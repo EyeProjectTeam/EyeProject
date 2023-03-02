@@ -20,6 +20,7 @@ namespace DeviceManage.CoreWeb
             Configure<MvcOptions>(p =>
             {
                 p.Filters.Add<ExceptionResultFilter>();
+                p.Filters.Add<ValidateResultFilter>();
                 p.Filters.Add<HttpLogFilter>();
             });
 
