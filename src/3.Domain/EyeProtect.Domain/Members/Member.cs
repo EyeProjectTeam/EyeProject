@@ -52,10 +52,5 @@ namespace EyeProtect.Domain.Members
         /// 账号类型
         /// </summary>
         public AccountType AccountType { get; set; }
-
-        /// <summary>
-        /// 操作记录
-        /// </summary>
-        public virtual List<OperationRecord> OperationRecords { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using Volo.Abp;
 using Volo.Abp.Modularity;
 using EyeProtect.CoreWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
+using EyeProtect.Core.Cache.Commons;
 
 namespace EyeProtect.Manage
 {
@@ -75,6 +76,11 @@ namespace EyeProtect.Manage
                 };
             }).AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
 
+            // Configure MVC
+            //Configure<MvcOptions>(p =>
+            //{
+            //    p.Filters.Add<HttpOperationRecordFilters>();
+            //});
 
             //auth policy
             //services.AddAuthorization(options =>
@@ -109,7 +115,6 @@ namespace EyeProtect.Manage
             app.UseAbpSecurityHeaders();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
-            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseUnitOfWork();

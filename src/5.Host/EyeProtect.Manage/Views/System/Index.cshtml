@@ -5,6 +5,9 @@
     ViewData["Tabs"] = "后台主页";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var echartsData = Model.EchartsData;
+}
 <div class="wrap-container welcome-container">
     <div class="row">
         <div class="welcome-left-container col-lg-12">
@@ -133,7 +136,7 @@
                             trigger: "axis"
                         },
                         legend: {
-                            data: ["会员", "文章", "评论"],
+                            data: ["访问数"],
                             selectedMode: false,
                         },
                         toolbox: {
@@ -163,8 +166,8 @@
                             {
                                 type: "category",
                                 boundaryGap: false,
-                                data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-                            }
+                                data: @Html.Raw(Json.Serialize(echartsData.XAxis))
+                                }
                         ],
                         yAxis: [
                             {
@@ -177,7 +180,7 @@
                         },
                         series: [
                             {
-                                name: "会员",
+                                name: "访问数",
                                 type: "line",
                                 smooth: true,
                                 itemStyle: {
@@ -187,35 +190,8 @@
                                         }
                                     }
                                 },
-                                data: [10, 12, 21, 54, 260, 830, 710]
-                            },
-                            {
-                                name: "文章",
-                                type: "line",
-                                smooth: true,
-                                itemStyle: {
-                                    normal: {
-                                        areaStyle: {
-                                            type: "default"
-                                        }
-                                    }
-                                },
-                                data: [30, 182, 434, 791, 390, 30, 10]
-                            },
-                            {
-                                name: "评论",
-                                type: "line",
-                                smooth: true,
-                                itemStyle: {
-                                    normal: {
-                                        areaStyle: {
-                                            type: "default"
-                                        },
-                                        color: "rgb(110, 211, 199)"
-                                    }
-                                },
-                                data: [1320, 1132, 601, 234, 120, 90, 20]
-                            }
+                                data: @Html.Raw(Json.Serialize(echartsData.Data))
+                                }
                         ]
                     }
                 );

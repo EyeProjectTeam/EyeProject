@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-    
+
 <script type="text/javascript">
     layui.use('table', function () {
         var table = layui.table;
@@ -155,12 +155,10 @@
 </script>
 
 <script type="text/html" id="accountTypeMsgTpl">
-     {{#  if(d.accountTypeMsg == '已使用'){ }}
+     {{#  if(d.accountTypeMsg == '已售出'){ }}
       <button class="layui-btn layui-btn-mini layui-btn">{{d.accountTypeMsg}}</button>
     {{#  } else if(d.accountTypeMsg == '已过期'){ }}
       <button class="layui-btn layui-btn-mini layui-btn-danger">{{d.accountTypeMsg}}</button>
-    {{#  } else if(d.accountTypeMsg == '未使用'){ }}
-      <button class="layui-btn layui-btn-mini layui-btn-normal">{{d.accountTypeMsg}}</button>
     {{#  } else if(d.accountTypeMsg == '未出售'){ }}
       <button class="layui-btn layui-btn-mini layui-btn-warm">{{d.accountTypeMsg}}</button>
     {{#  } }}

@@ -88,13 +88,14 @@ namespace EyeProtect.Core.Cache.Internal
         {
             CacheName = cacheName ?? CacheOptions.DefaultCacheName;
             Config = config.Value;
-
-            CacheStorage = cacheStorage;
-            RedisCache = cacheStorage.GetRedisCache();
-            MemoryCache = cacheStorage.GetMemoryCache();
             Options = Config.GetOrDefaultOption(CacheName);
-
             StoragePolicy = Options.StoragePolicy;
+            CacheStorage = cacheStorage;
+            MemoryCache = cacheStorage.GetMemoryCache();
+            if (StoragePolicy.HasFlag(CacheStoragePolicy.Redis))
+            {
+                RedisCache = cacheStorage.GetRedisCache();
+            }
         }
 
         /// <summary>

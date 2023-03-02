@@ -16,15 +16,15 @@ namespace EyeProtect.Core.Enums
         Login = 1,
 
         [Display(Name = "登入密码错误")]
-        PwdError = 1,
+        PwdError = 2,
 
         [Display(Name = "登出")]
-        Logout = 2,
+        Logout = 3,
 
         [Display(Name = "引擎")]
-        Engine = 3,
+        Engine = 4,
 
         [Display(Name = "管理端")]
-        Manager = 4
+        Manager = 5
     }
 }

@@ -15,5 +15,16 @@ namespace EyeProtect.Contract.Dtos
         public int Expire { get; set; }
 
         public string ServerDate => DateTime.Now.ToShortDateString();
+
+        public EchartsData EchartsData { get; set; }
+
+
+    }
+
+    public class EchartsData
+    {
+        public List<string> XAxis { get; set; }
+
+        public List<int> Data { get; set; }
     }
 }

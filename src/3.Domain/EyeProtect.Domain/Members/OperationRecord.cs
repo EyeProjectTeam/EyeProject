@@ -30,12 +30,6 @@ namespace EyeProtect.Members
         public string Account { get; set; }
 
         /// <summary>
-        /// 会员姓名
-        /// </summary>
-        [StringLength(30)]
-        public string MemberName { get; set; }
-
-        /// <summary>
         /// IPAddress
         /// </summary>
         [StringLength(100)]

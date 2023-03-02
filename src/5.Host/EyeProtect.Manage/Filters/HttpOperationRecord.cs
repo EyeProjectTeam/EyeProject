@@ -76,7 +76,6 @@ namespace EyeProtect.Manage.Filters
             }
             finally
             {
-
                 if (context.Items.TryGetValue("ActionDescriptor", out var c1) && c1 is ControllerActionDescriptor actionDescriptor)
                 {
                     var executedContext = context.Items.TryGetValue("ActionExecutedContext", out var c3) ? c3 as ActionExecutedContext : null;

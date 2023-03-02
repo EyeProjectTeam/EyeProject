@@ -11,7 +11,7 @@ namespace EyeProtect.CoreWeb.Filters
     /// <summary>
     /// 防止浏览器直接补
     /// </summary>
-    public class ErrorHandlingMiddleware : IMiddleware, ITransientDependency
+    public class HandlingResultMiddleware : IMiddleware, ITransientDependency
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
@@ -19,15 +19,15 @@ namespace EyeProtect.CoreWeb.Filters
             {
                 await next(context);
             }
-            catch (Exception ex)
-            {
-                var statusCode = context.Response.StatusCode;
-                if (ex is ArgumentException)
-                {
-                    statusCode = ResultCode.InvalidData;
-                }
-                await HandleExceptionAsync(context, (statusCode, ex.Message));
-            }
+            //catch (Exception ex)
+            //{
+            //    var statusCode = context.Response.StatusCode;
+            //    if (ex is ArgumentException)
+            //    {
+            //        statusCode = ResultCode.InvalidData;
+            //    }
+            //    await HandleExceptionAsync(context, (statusCode, ex.Message));
+            //}
             finally
             {
                 var statusCode = context.Response.StatusCode;

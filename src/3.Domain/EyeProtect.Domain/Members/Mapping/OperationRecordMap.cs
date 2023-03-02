@@ -17,11 +17,7 @@ namespace EyeProtect.Members.Mapping
 
             b.HasKey(x => x.Id);
             b.Property(x => x.Id).ValueGeneratedOnAdd();
-
-            b.HasIndex(x => x.MemberId);
-            b.HasIndex(x => x.MemberName);
             b.HasIndex(x => x.OperrationType);
-            b.HasIndex(x => new { x.MemberId, x.OperrationType });
         }
     }
 }

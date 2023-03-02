@@ -25,7 +25,9 @@ using EyeProtect.Core.Utils;
 using EyeProtect.Contract.Dtos;
 using EyeProtect.Core.Cache;
 using EyeProtect.Core;
-using AutoMapper.QueryableExtensions.Impl;
+using EyeProtect.Service.Migrations;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace EyeProtect.Application
 {
@@ -49,14 +51,14 @@ namespace EyeProtect.Application
             IOptions<SupAdminOptions> supAdminOption,
             IOptions<AccountLockOptions> accountLockOptions,
             IOperationRecordRepository operationRecordRepository,
-            ICache<string> cache)
+            ICacheManager cacheManager)
         {
             _supAdminOption = supAdminOption.Value;
             _jwtOptions = jwtOptions.Value;
             _accountLockOptions = accountLockOptions.Value;
             _memberRepository = memberRepository;
             _operationRecordRepository = operationRecordRepository;
-            _cache = cache;
+            _cache = cacheManager.GetCache<string>();
         }
 
         /// <summary>
@@ -84,8 +86,7 @@ namespace EyeProtect.Application
             }
             else
             {
-                var key = $"lockAccount:{input.Account}";
-                if (await _cache.ExistsAsync(key))
+                if (await _cache.ExistsAsync(GetLockKey(input.Account)))
                 {
                     return (ResultCode.CallLimited, "超出登录次数限制，账户已被锁定");
                 }
@@ -96,7 +97,7 @@ namespace EyeProtect.Application
                 }
                 if (member.Password != input.Password)
                 {
-                    var lockCount = await LockAccountAsync(key);
+                    var lockCount = await LockAccountAsync(input.Account);
                     if (lockCount == 0)
                     {
                         return (ResultCode.SpaFailed, $"超出登录次数限制，账户被锁定");
@@ -177,11 +178,38 @@ namespace EyeProtect.Application
             var unSale = await _memberRepository.CountAsync(x => x.AccountType == AccountType.UnSale);
             var expire = await _memberRepository.CountAsync(x => x.AccountType == AccountType.Expire);
 
+            var currDate = DateTime.Now;
+            var startDate = new DateTime(currDate.Year, currDate.Month, 1);
+            var visiteRecord = await (await _operationRecordRepository.GetQueryableAsync()).Where(x => x.CreationTime >= startDate && x.OperrationType == OperrationType.Engine).ToListAsync();
+            var statitc = visiteRecord.GroupBy(x => x.CreationTime.Day).Select(x => new
+            {
+                Day = x.Key,
+                Count = x.Count()
+            }).ToList();
+            var xAxis = new List<string>();
+            for (var idate = startDate; idate <= startDate.AddMonths(1).AddDays(-1); idate = idate.AddDays(1))
+            {
+                xAxis.Add($"{idate.Month}月{idate.Day}日");
+
+                if (!statitc.Any(x => x.Day == idate.Day))
+                {
+                    statitc.Add(new
+                    {
+                        Day = idate.Day,
+                        Count = 0
+                    });
+                }
+            }
             return Result.FromData(new StaticAccountDataOutput()
             {
                 UnSale = unSale,
                 Sale = sale,
-                Expire = expire
+                Expire = expire,
+                EchartsData = new EchartsData
+                {
+                    XAxis = xAxis,
+                    Data = statitc.OrderBy(x => x.Day).Select(x => x.Count).ToList(),
+                }
             });
         }
 
@@ -210,14 +238,27 @@ namespace EyeProtect.Application
 
         #region Method
 
-        private async Task<int> LockAccountAsync(string key)
+        private string GetLockKey(string account)
+        {
+            return $"lockAccount:{account}";
+        }
+
+        private async Task<int> LockAccountAsync(string account)
         {
             //锁定范围起始时间
             var startDate = DateTime.Now.AddMinutes(_accountLockOptions.LockRange * -1);
-            var lockCount = await _operationRecordRepository.CountAsync(x => x.CreationTime >= startDate);
+            var lockCount = await _operationRecordRepository.CountAsync(x => x.CreationTime >= startDate && x.Account == account);
+            if (lockCount > _accountLockOptions.LockNum)
+            {
+                if (!await _cache.ExistsAsync(GetLockKey(account)))
+                {
+                    await _cache.SetAsync<string>(GetLockKey(account), "1", TimeSpan.FromMinutes(_accountLockOptions.LockTime));
+                }
+                return 0;
+            }
             if (lockCount == _accountLockOptions.LockNum)
             {
-                await _cache.SetAsync<string>(key, "1", TimeSpan.FromMinutes(_accountLockOptions.LockTime));
+                await _cache.SetAsync<string>(GetLockKey(account), "1", TimeSpan.FromMinutes(_accountLockOptions.LockTime));
             }
             return _accountLockOptions.LockNum - lockCount;
         }

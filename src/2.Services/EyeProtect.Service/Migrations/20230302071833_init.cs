@@ -48,12 +48,7 @@ namespace EyeProtect.Service.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    MemberId = table.Column<long>(type: "bigint", nullable: false),
-                    Roles = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Account = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MemberName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Ip = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -70,24 +65,19 @@ namespace EyeProtect.Service.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OperationRecords_MemberId",
-                table: "OperationRecords",
-                column: "MemberId");
-
-            migrationBuilder.CreateIndex(
-               name: "IX_Members_Account",
-               table: "Members",
-               column: "Account",
-               unique: true);
+              name: "IX_Members_Account",
+              table: "Members",
+              column: "Account",
+              unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OperationRecords");
+                name: "Members");
 
             migrationBuilder.DropTable(
-                name: "Members");
+                name: "OperationRecords");
         }
     }
 }

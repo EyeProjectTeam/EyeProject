@@ -1,6 +1,8 @@
 ﻿using DeviceManage.Core;
 using EyeProtect.CoreWeb.Filters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.Modularity;
 
@@ -26,6 +28,13 @@ namespace DeviceManage.CoreWeb
             /// https://docs.microsoft.com/zh-cn/aspnet/core/security/anti-request-forgery?view=aspnetcore-6.0
             /// </summary>
             Configure<AbpAntiForgeryOptions>(options => { options.AutoValidate = false; });
+        }
+
+        public override void OnApplicationInitialization(ApplicationInitializationContext context)
+        {
+            var app = context.GetApplicationBuilder();
+            app.UseMiddleware<HandlingResultMiddleware>();
+            app.UseMiddleware<HttpLogMiddleware>();
         }
     }
 }

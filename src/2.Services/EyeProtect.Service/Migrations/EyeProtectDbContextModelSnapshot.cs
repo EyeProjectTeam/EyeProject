@@ -108,39 +108,12 @@ namespace EyeProtect.Service.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("LastModificationTime");
 
-                    b.Property<long>("MemberId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("MemberName")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)");
-
                     b.Property<int>("OperrationType")
                         .HasColumnType("int");
 
-                    b.Property<string>("Roles")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
-
                     b.ToTable("OperationRecords");
-                });
-
-            modelBuilder.Entity("EyeProtect.Members.OperationRecord", b =>
-                {
-                    b.HasOne("EyeProtect.Domain.Members.Member", null)
-                        .WithMany("OperationRecords")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EyeProtect.Domain.Members.Member", b =>
-                {
-                    b.Navigation("OperationRecords");
                 });
 #pragma warning restore 612, 618
         }
