@@ -2,24 +2,14 @@
 using EyeProtect.Core.Const;
 using EyeProtect.Manage.Configuration;
 using EyeProtect.Manage.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
-using EyeProtect.CoreWeb.Filters;
-using Microsoft.AspNetCore.Mvc;
-using EyeProtect.Core.Cache.Commons;
 using EyeProtect.Manage.Timers;
 
 namespace EyeProtect.Manage
@@ -109,10 +99,6 @@ namespace EyeProtect.Manage
             var env = context.GetEnvironment();
             var config = context.ServiceProvider.GetRequiredService<IConfiguration>();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
             app.UseCorrelationId();
             app.UseStaticFiles();
             app.UseAbpSecurityHeaders();
