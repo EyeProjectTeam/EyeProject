@@ -25,9 +25,6 @@ using EyeProtect.Core.Utils;
 using EyeProtect.Contract.Dtos;
 using EyeProtect.Core.Cache;
 using EyeProtect.Core;
-using EyeProtect.Service.Migrations;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace EyeProtect.Application
 {
@@ -165,6 +162,22 @@ namespace EyeProtect.Application
             }
             member.AccountType = AccountType.Sale;
             await _memberRepository.UpdateAsync(member);
+            return Result.Ok();
+        }
+
+        /// <summary>
+        /// 过期账号
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Result> ExpireAccount()
+        {
+            var startDate = DateTime.Now.AddYears(-1);
+            var memberList = await (await _memberRepository.GetQueryableAsync()).Where(x => x.CreationTime <= startDate && x.AccountType == AccountType.Sale).ToListAsync();
+            if (memberList.Any())
+            {
+                memberList.ForEach(x => { x.AccountType = AccountType.Expire; });
+                await _memberRepository.UpdateManyAsync(memberList);
+            }
             return Result.Ok();
         }
 

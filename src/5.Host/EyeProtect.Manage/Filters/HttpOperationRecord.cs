@@ -127,6 +127,9 @@ namespace EyeProtect.Manage.Filters
                 case "index":
                     operationRecords.Add(new OperationRecord(account, ip, OperrationType.Manager));
                     break;
+                case "resale":
+                    operationRecords.Add(new OperationRecord(account, ip, OperrationType.ReSale));
+                    break;
                 default:
                     break;
             }

@@ -84,17 +84,10 @@
 
 <script type="text/javascript">
     var table = layui.table;
-    function UpdateAccountType(id, accountType, operateAccountType) {
-        var input = {
-            AccountType: accountType,
-            OperateAccountType: operateAccountType
-        };
+    function UpdateAccountType(actionName, id, operateAccountType) {
         $.ajax({
-            url: baseUrl + "/Account/UpdateAccountType?id=" + id,
+            url: baseUrl + "/Account/" + actionName + "?id=" + id + "&operateAccountType=" + operateAccountType,
             type: "put",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(input),
             success: function (result) {
                 if (result && result.code == 0) {
                     table.reload("accountList", {
@@ -148,9 +141,9 @@
 }
 <script type="text/html" id="operate">
     {{#  if(d.accountTypeMsg == '已过期'){ }}
-      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},@reSale));" class="layui-table-link">续费</a>
+      <a href="javascript:void(0)" onclick="UpdateAccountType('ReSale',{{d.id}},@reSale);" class="layui-table-link">续费</a>
     {{#  } else if(d.accountTypeMsg == '未出售'){ }}
-      <a href="javascript:void(0)" onclick="UpdateAccountType({{d.id}},@sale);" class="layui-table-link">出售</a>
+      <a href="javascript:void(0)" onclick="UpdateAccountType('Sale',{{d.id}},@sale);" class="layui-table-link">出售</a>
     {{#  } }}
 </script>
 

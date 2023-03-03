@@ -25,5 +25,7 @@ namespace EyeProtect.Application
         Task<IActionResult> ExportMemberList(MemberPageListInput input);
 
         Task<Result<StaticAccountDataOutput>> StaticAccountData();
+
+        Task<Result> ExpireAccount();
     }
 }

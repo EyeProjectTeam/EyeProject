@@ -20,6 +20,7 @@ using Volo.Abp.Modularity;
 using EyeProtect.CoreWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
 using EyeProtect.Core.Cache.Commons;
+using EyeProtect.Manage.Timers;
 
 namespace EyeProtect.Manage
 {
@@ -75,6 +76,8 @@ namespace EyeProtect.Manage
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
             }).AddApplicationPart(typeof(EyeProtectManagerApiModule).Assembly);
+
+            services.AddHostedService<TimerService>();
 
             // Configure MVC
             //Configure<MvcOptions>(p =>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace EyeProtect.Core.Enums
 {
@@ -12,6 +13,7 @@ namespace EyeProtect.Core.Enums
     /// </summary>
     public enum OperrationType
     {
+        #region 登录
         [Display(Name = "登入")]
         Login = 1,
 
@@ -25,6 +27,14 @@ namespace EyeProtect.Core.Enums
         Engine = 4,
 
         [Display(Name = "管理端")]
-        Manager = 5
+        Manager = 5,
+        #endregion
+
+        #region 操作
+
+        [Display(Name = "续期")]
+        ReSale = 6
+
+        #endregion
     }
 }

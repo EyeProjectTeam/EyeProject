@@ -5,6 +5,7 @@ using EyeProtect.Dtos;
 using EyeProtect.Manage.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -53,16 +54,27 @@ namespace EyeProtect.Manage.Controllers
         }
 
         /// <summary>
-        /// 更新账号状态
+        /// 出售
         /// </summary>
         /// <param name="id"></param>
         /// <param name="operateAccountType"></param>
         /// <returns></returns>
-        [HttpPut("UpdateAccountType")]
-        public Task<Result> UpdateAccountType([FromQuery] long id, [FromBody] OperateAccountType operateAccountType)
+        [HttpPut("Sale")]
+        public Task<Result> Sale([FromQuery, Required] long id, [FromQuery, Required] OperateAccountType operateAccountType)
         {
             return _memberService.UpdateAccountType(id, operateAccountType);
         }
 
+        /// <summary>
+        /// 续费
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="operateAccountType"></param>
+        /// <returns></returns>
+        [HttpPut("ReSale")]
+        public Task<Result> ReSale([FromQuery, Required] long id, [FromQuery, Required] OperateAccountType operateAccountType)
+        {
+            return _memberService.UpdateAccountType(id, operateAccountType);
+        }
     }
 }
