@@ -85,25 +85,31 @@
 <script type="text/javascript">
     var table = layui.table;
     function UpdateAccountType(actionName, id, operateAccountType) {
-        $.ajax({
-            url: baseUrl + "/Account/" + actionName + "?id=" + id + "&operateAccountType=" + operateAccountType,
-            type: "put",
-            success: function (result) {
-                if (result && result.code == 0) {
-                    table.reload("accountList", {
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        },
-                        where: {
-                            account: null,
-                            accountType: "",
-                        }
-                    });
+        var alertMsg = actionName == 'ReSale' ? '续费' : '出售';
+        layer.confirm('您确定要' + alertMsg, {
+            btn: ['Yes', 'No'] //按钮
+        }, function (index) {
+            $.ajax({
+                url: baseUrl + "/Account/" + actionName + "?id=" + id + "&operateAccountType=" + operateAccountType,
+                type: "put",
+                success: function (result) {
+                    if (result && result.code == 0) {
+                        table.reload("accountList", {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            },
+                            where: {
+                                account: null,
+                                accountType: "",
+                            }
+                        });
+                    }
+                    else {
+                        layer.alert(JSON.stringify(result.message));
+                    }
                 }
-                else {
-                    layer.alert(JSON.stringify(result.message));
-                }
-            }
+            });
+            layer.close(index);
         });
     }
 
